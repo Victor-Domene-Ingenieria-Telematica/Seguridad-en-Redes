@@ -83,13 +83,13 @@ int main(int argc, char *argv[])
         // Leemos de /dev/urandom el numero aleatorio de 8 bytes
         FILE *urandom = fopen("/dev/urandom", "r");
         if (urandom == NULL) {
-            err(EXIT_FAILURE, "fopen failed"); // Cortamos por lo sano si falla
+            err(EXIT_FAILURE, "fopen failed");
         }
-        fread(nonce, 1, 8, urandom);
+        fread(nonce, 1, 8, urandom);  // Leemos de 1 byte en 1 byte hasta llenar 8 bytes
         fclose(urandom);
 
         // Creamos el nonce entero
-        memset(nonce + 8, 0, 8);  // LLenamos con ceros
+        memset(nonce + 8, 0, 8);  // LLenamos con ceros a partir del octav byte
         memcpy(nonce + 8, &auth_counter, sizeof(int));  // Concatenamos el contador
         auth_counter++;
 

@@ -5,16 +5,6 @@
 #include <string.h>
 #include <openssl/evp.h>
 
-// Tu enum intacto
-enum {
-	Buffsize = 4096,
-	Blocksize = 64,
-	Hashsize = 20,
-	Ipadvalue = 0x36,
-	Opadvalue = 0x5c,
-};
-
-// Tu función intacta
 void
 create_pads(unsigned char *k_pad, unsigned char *ipad, unsigned char *opad)
 {
@@ -26,7 +16,6 @@ create_pads(unsigned char *k_pad, unsigned char *ipad, unsigned char *opad)
 	}
 }
 
-// Tu función intacta
 void
 hash_init(EVP_MD_CTX *mdctx, unsigned char *pad)
 {
@@ -37,7 +26,6 @@ hash_init(EVP_MD_CTX *mdctx, unsigned char *pad)
 		errx(EXIT_FAILURE, "EVP_DigestUpdate pad failed");
 }
 
-// Modificada para leer memoria en vez de usar fread()
 void
 hash_update_mem(EVP_MD_CTX *mdctx, unsigned char *datos, int len)
 {
@@ -45,7 +33,6 @@ hash_update_mem(EVP_MD_CTX *mdctx, unsigned char *datos, int len)
 		errx(EXIT_FAILURE, "EVP_DigestUpdate failed");
 }
 
-// Tu función intacta
 void
 hash_final(EVP_MD_CTX *mdctx, unsigned char *res, unsigned int *len)
 {
@@ -53,7 +40,6 @@ hash_final(EVP_MD_CTX *mdctx, unsigned char *res, unsigned int *len)
 		errx(EXIT_FAILURE, "EVP_DigestFinal_ex failed");
 }
 
-// Adaptación de tu get_key, usando tu misma lógica para claves grandes
 void
 get_key_mem(unsigned char *k_pad, unsigned char *key, int key_len)
 {
@@ -76,7 +62,6 @@ get_key_mem(unsigned char *k_pad, unsigned char *key, int key_len)
 	}
 }
 
-// Esta es la traducción literal de tu main()
 void
 generar_hmac(unsigned char *key, int key_len, unsigned char *datos, int datos_len, unsigned char *hash_result)
 {
@@ -103,7 +88,6 @@ generar_hmac(unsigned char *key, int key_len, unsigned char *datos, int datos_le
 
 	hash_init(mdctx, ipad);
 	
-    // En tu main leías el fichero aquí. Ahora le pasamos la variable.
 	hash_update_mem(mdctx, datos, datos_len);
 
 	hash_final(mdctx, hash_intern, &hash_len_intern);
@@ -112,7 +96,6 @@ generar_hmac(unsigned char *key, int key_len, unsigned char *datos, int datos_le
 	if (!EVP_DigestUpdate(mdctx, hash_intern, hash_len_intern))
 		errx(EXIT_FAILURE, "EVP_DigestUpdate failed");
 
-     // En lugar de usar la variable local 'hash', lo guardamos en 'hash_result'
 	hash_final(mdctx, hash_result, &hash_len);
 
 	EVP_MD_CTX_free(mdctx);
