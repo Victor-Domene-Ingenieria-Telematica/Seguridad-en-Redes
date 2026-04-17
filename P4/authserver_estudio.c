@@ -19,7 +19,7 @@ void ok_args(int argc, char *argv[])
 int get_port(int argc, char *argv[])
 {
     char *endptr;
-    long long_port = strtol(argv[2], &endptr, 10);
+    long long_port = strtol_r(argv[2], &endptr, 10);
     
     // Comprobamos si hubo error (en socket TCP los puertos solo van del 1 al 65535)
     if (*endptr != '\0' || long_port <= 0 || long_port > 65535)
