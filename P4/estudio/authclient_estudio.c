@@ -10,8 +10,8 @@
 #include <time.h>
 #include <string.h>
 #include <stdint.h>
-#include "hmacsha1.h"
-#include "utils.h"
+#include "hmacsha1_estudio.h"
+#include "utils_estudio.h"
 
 // Función vacía para interrumpir el read por el timeout
 void handler(int sig) {
