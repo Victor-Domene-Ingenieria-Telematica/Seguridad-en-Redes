@@ -87,9 +87,9 @@ main(int argc, char *argv[])
 
 	uint64_t client_T = (uint64_t) current_time;
 
-	unsigned char msg_to_hash[280];
+	unsigned char msg_to_hash[24];
 
-	build_hash_msg(msg_to_hash, nonce, client_T, client_login);
+	build_hash_msg(msg_to_hash, nonce, client_T);
 
 	unsigned char key_bytes[20];
 	int key_len;
@@ -99,7 +99,7 @@ main(int argc, char *argv[])
 	unsigned char hmac[20];
 
 	memset(hmac, 0, 20);
-	generar_hmac(key_bytes, key_len, msg_to_hash, 280, hmac);
+	generar_hmac(key_bytes, key_len, msg_to_hash, 24, hmac);
 
 	unsigned char buffer_tx[284];
 

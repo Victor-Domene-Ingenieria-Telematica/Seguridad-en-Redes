@@ -41,19 +41,12 @@ parse_key(char *password, unsigned char *key_bytes, int *key_len)
 }
 
 void
-build_hash_msg(unsigned char *msg, unsigned char *nonce, uint64_t timestamp,
-	       char *login)
+build_hash_msg(unsigned char *msg, unsigned char *nonce, uint64_t timestamp)
 {
-	memset(msg, 0, 280);
+	memset(msg, 0, 24);
 
 	memcpy(msg, nonce, 16);
 	memcpy(msg + 16, &timestamp, 8);
-
-	char temp_login[256];
-
-	memset(temp_login, 0, 256);
-	strncpy(temp_login, login, 255);
-	memcpy(msg + 24, temp_login, 256);
 }
 
 int

@@ -13,7 +13,7 @@
 #include "hmacsha1.h"
 #include "utils.h"
 
-int auth_counter = 0;
+uint64_t auth_counter = 0;
 
 void
 ok_args(int argc, char *argv[])
@@ -87,7 +87,7 @@ main(int argc, char *argv[])
 		fclose(urandom);
 
 		memset(nonce + 8, 0, 8);
-		memcpy(nonce + 8, &auth_counter, sizeof(int));
+		memcpy(nonce + 8, &auth_counter, sizeof(uint64_t));
 		auth_counter++;
 
 		if (write(fd, nonce, 16) != 16) {
@@ -156,14 +156,13 @@ main(int argc, char *argv[])
 
 		parse_key(f_keyhex_guardado, server_key, &key_len);
 
-		unsigned char server_msg_to_hash[280];
+		unsigned char server_msg_to_hash[24];
 
-		build_hash_msg(server_msg_to_hash, nonce, client_T,
-			       client_login);
+		build_hash_msg(server_msg_to_hash, nonce, client_T);
 
 		unsigned char server_hmac[20];
 
-		generar_hmac(server_key, 20, server_msg_to_hash, 280,
+		generar_hmac(server_key, 20, server_msg_to_hash, 24,
 			     server_hmac);
 
 		if (memcmp(client_hmac, server_hmac, 20) == 0) {
