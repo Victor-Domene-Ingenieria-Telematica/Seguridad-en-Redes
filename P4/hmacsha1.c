@@ -56,6 +56,7 @@ get_key_mem(unsigned char *k_pad, unsigned char *key, int key_len)
 		EVP_DigestUpdate(mdctx_key, key, key_len);
 
 		unsigned int key_hash_len;
+
 		hash_final(mdctx_key, k_pad, &key_hash_len);
 
 		EVP_MD_CTX_free(mdctx_key);
@@ -63,7 +64,8 @@ get_key_mem(unsigned char *k_pad, unsigned char *key, int key_len)
 }
 
 void
-generar_hmac(unsigned char *key, int key_len, unsigned char *datos, int datos_len, unsigned char *hash_result)
+generar_hmac(unsigned char *key, int key_len, unsigned char *datos,
+	     int datos_len, unsigned char *hash_result)
 {
 	unsigned char k_pad[Blocksize];
 
@@ -87,7 +89,7 @@ generar_hmac(unsigned char *key, int key_len, unsigned char *datos, int datos_le
 		errx(EXIT_FAILURE, "EVP_MD_CTX_new failed");
 
 	hash_init(mdctx, ipad);
-	
+
 	hash_update_mem(mdctx, datos, datos_len);
 
 	hash_final(mdctx, hash_intern, &hash_len_intern);
